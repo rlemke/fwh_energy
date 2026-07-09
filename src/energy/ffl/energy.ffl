@@ -1,0 +1,36 @@
+// Energy domain — US energy trade + prices dashboard from EIA (keyless bulk data).
+//
+// BuildDashboard downloads the EIA bulk PET + NG series (imports/exports of crude,
+// refined products and natural gas, plus gasoline / WTI / Henry Hub prices) and
+// renders a self-contained inline-SVG time-series dashboard. Output ->
+// cache/energy/output/index.html (MinIO on the fleet).
+
+namespace energy.data {
+    /** Download the EIA bulk energy series (keyless) and render the trade+prices
+      * dashboard (inline-SVG charts, no JS/CDN). */
+    event facet BuildDashboard(
+        force: Boolean = false
+    ) => (
+        html_path: String,
+        json_path: String,
+        series_count: Int,
+        month_min: String,
+        month_max: String
+    ) with Effect(kind = "external") with Cost(tier = "moderate") with Timeout(minutes = 10)
+}
+
+namespace energy.workflows {
+    use energy.data
+
+    /** Build the US energy trade + prices dashboard (EIA). */
+    workflow BuildEnergyDashboard(
+        force: Boolean = false
+    ) => (status: String, html_path: String, series_count: Int) andThen {
+        d = BuildDashboard(force = $.force)
+        yield BuildEnergyDashboard(
+            status = "completed",
+            html_path = d.html_path,
+            series_count = d.series_count
+        )
+    }
+}
