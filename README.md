@@ -12,6 +12,20 @@ self-contained page of inline-SVG time-series charts (no JS, no CDN) from the
 
 **Live:** [rlemke.github.io/facetwork-maps/us/energy-trade](https://rlemke.github.io/facetwork-maps/us/energy-trade/)
 
+## Feature specifications
+
+Per-feature specs live under [`docs/`](docs/README.md) — how each part works, what
+data it touches, its facets, and its cache/output:
+
+| Spec | What it covers |
+|------|----------------|
+| [docs/dashboard.md](docs/dashboard.md) | **Flagship** — the `BuildDashboard` facet + `BuildEnergyDashboard` workflow (the runnable dashboard build). |
+| [docs/eia-ingest.md](docs/eia-ingest.md) | Keyless EIA bulk acquisition (`PET.zip`/`NG.zip` NDJSON → the 10 US-total series). |
+| [docs/svg-charts.md](docs/svg-charts.md) | The self-contained inline-SVG chart renderer (no JS/CDN). |
+| [docs/storage.md](docs/storage.md) | Backend-aware cache/output (local dir vs MinIO/S3). |
+
+See [`docs/README.md`](docs/README.md) for the full index.
+
 ## Data
 
 - **EIA bulk files — keyless** (`www.eia.gov/opendata/bulk/`): `PET.zip` (~59 MB)
