@@ -12,6 +12,41 @@ self-contained page of inline-SVG time-series charts (no JS, no CDN) from the
 
 **Live:** [rlemke.github.io/facetwork-maps/us/energy-trade](https://rlemke.github.io/facetwork-maps/us/energy-trade/)
 
+## FFL at a glance
+
+The domain is driven from [FFL](https://github.com/rlemke/facetwork/blob/main/docs/reference/language/grammar.md),
+Facetwork's workflow language. A step is `name = Facet(args)`, and later steps
+reference earlier ones as `step.field`:
+
+```ffl
+namespace my.energy {
+
+    use energy.data
+
+    /** Rebuild the dashboard, optionally re-downloading the EIA bulk files. */
+    workflow RefreshDashboard(force: Boolean = false) => (status: String, html_path: String, coverage: String) andThen {
+
+        d = energy.data.BuildDashboard(force = $.force)
+
+        yield RefreshDashboard(
+            status = "completed",
+            html_path = d.html_path,
+            coverage = d.month_min ++ " to " ++ d.month_max)
+    }
+}
+```
+
+```bash
+fw ffl run --primary my.ffl --library src/energy/ffl/energy.ffl \
+  --workflow my.energy.RefreshDashboard --inputs '{"force": true}'
+```
+
+📖 **[docs/ffl-examples.md](docs/ffl-examples.md)** — the full example gallery:
+call-time mixins (timeout/retry for the 59 MB bulk download), `catch`, `when`
+guards on series coverage, wrapping the shipped workflow, and cross-domain
+composition (publishing). Every snippet there is compile-checked; this domain's
+single facet makes it a good place to learn the language.
+
 ## Feature specifications
 
 Per-feature specs live under [`docs/`](docs/README.md) — how each part works, what

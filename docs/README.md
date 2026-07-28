@@ -23,6 +23,7 @@ capability: the `energy.data.BuildDashboard` event facet + the
 | [eia-ingest.md](eia-ingest.md) | Keyless EIA **bulk** acquisition: `PET.zip`/`NG.zip` NDJSON → the 10 US-total monthly series (real series IDs), `YEAR_FROM=2000` clipping, `requests` fetch, compact caching. |
 | [svg-charts.md](svg-charts.md) | The self-contained inline-SVG renderer (no JS/CDN): `_svg_chart` primitives, the six trade+price charts, unit scaling, and the HTML page with thesis callout + provenance footer. |
 | [storage.md](storage.md) | Backend-aware cache/output shim: local dir vs MinIO/S3, `cache_root`/`output_root` layout, the stage-local-finalize-on-close write pattern. |
+| [ffl-examples.md](ffl-examples.md) | **Usage patterns.** A gallery of complete, compile-checked FFL examples over this domain's facet — minimal workflow, `$`-scoping, call-time mixins, `catch`, `when`, wrapping the shipped workflow, cross-domain publish. |
 
 ---
 
